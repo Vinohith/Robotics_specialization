@@ -5,10 +5,15 @@ function [ u ] = pd_controller(~, s, s_des, params)
 %   s_des: 2x1 vector containing desired state [z; v_z]
 %   params: robot parameters
 
-u = 0;
-
-
 % FILL IN YOUR CODE HERE
+
+Kp = 422;
+Kv = 28;
+a_des = 0;
+e = (s_des(1) - s(1));
+e_dot = (s_des(2) - s(2));
+
+u = params.mass * (a_des + Kp*e + Kv*e_dot + params.gravity);
 
 
 end
