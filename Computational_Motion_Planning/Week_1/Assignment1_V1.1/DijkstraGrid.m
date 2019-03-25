@@ -75,7 +75,6 @@ while true
         grid on;
         axis image;
         drawnow;
-        saveas(gca,sprintf('%d.jpg',numExpanded));
     end
     
     % Find the node with the minimum distance
