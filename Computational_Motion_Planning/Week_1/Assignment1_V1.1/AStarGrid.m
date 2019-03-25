@@ -96,7 +96,7 @@ while true
     
     if ((current == dest_node) || isinf(min_f))
         break;
-    end;
+    end
     
     % Update input_map
     map(current) = 3;
@@ -109,12 +109,31 @@ while true
     % ALL YOUR CODE BETWEEN THESE LINES OF STARS
     % Visit all of the neighbors around the current node and update the
     % entries in the map, f, g and parent arrays
-    %
+    neighbours = [];
+    if (i-1 >= 1)
+        neighbours = [sub2ind(size(map), i-1, j); neighbours];
+    end
+    if (i+1 <= ncols)
+        neighbours = [sub2ind(size(map), i+1, j); neighbours];
+    end
+    if (j-1 >= 1)
+        neighbours = [sub2ind(size(map), i, j-1); neighbours];
+    end
+    if (j+1 <= nrows)
+        neighbours = [sub2ind(size(map), i, j+1); neighbours];
+    end
     
+    for index = 1:length(neighbours)
+        considered_neighbour = neighbours(index);
+        if(map(considered_neighbour) ~= 2 && map(considered_neighbour) ~= 3 && map(considered_neighbour) ~= 5)
+            map(considered_neighbour) = 4;
+            g(considered_neighbour) = g(current) + 1;
+            f(considered_neighbour) = g(considered_neighbour) + H(considered_neighbour);
+            parent(considered_neighbour) = current;
+        end
+    end
     
-    
-    
-    
+    numExpanded = numExpanded + 1; 
     %*********************************************************************
     
     
