@@ -1,5 +1,5 @@
 function route = DijkstraTorus (input_map, start_coords, dest_coords)
-% Run Dijkstra's algorithm on a grid.
+    % Run Dijkstra's algorithm on a grid.
 % Inputs : 
 %   input_map : a logical array where the freespace cells are false or 0 and
 %      the obstacles are true or 1
@@ -27,6 +27,11 @@ cmap = [1 1 1; ...
 
 colormap(cmap);
 
+label = true;
+
+% This is important
+input_map(:, 181) = [];
+input_map(181, :) = [];
 
 [nrows, ncols] = size(input_map);
 
@@ -58,11 +63,11 @@ while true
     map(start_node) = 5;
     map(dest_node) = 6;
     
-    image(1.5, 1.5, map);
-    grid on;
-    axis image;
-    drawnow;
-    
+    %image(1.5, 1.5, map);
+    %grid on;
+    %axis image;
+    %drawnow;
+%     
     % Find the node with the minimum distance
     [min_dist, current] = min(distances(:));
     
@@ -82,8 +87,15 @@ while true
    
     %%% All of your code should be between the two lines of stars. 
     % *******************************************************************
-    
-    
+    % Since it is Torus it can be cyclic
+    row = mod(i, nrows)+1;
+    update(row, j, min_dist+1, current);
+    row = mod(i-2, nrows)+1;
+    update(row, j, min_dist+1, current);
+    col = mod(j, ncols)+1;
+    update(i, col, min_dist+1, current);
+    col = mod(j-2, ncols)+1;
+    update(i, col, min_dist+1, current);
     % *******************************************************************
 end
 
@@ -95,6 +107,7 @@ else
     while (parent(route(1)) ~= 0)
         route = [parent(route(1)), route];
     end
+    drawMap(label);
 end
 
     function update (i,j,d,p)
@@ -105,4 +118,14 @@ end
         end
     end
 
+    function drawMap(label)
+        if label==true
+        for k = 2:length(route) - 1        
+            map(route(k)) = 7;
+        end
+        image(1.5, 1.5, map);
+        grid on;
+        axis image;
+        end
+        end
 end
